@@ -28,6 +28,19 @@ app.post('/', (req, res) => {
   const timestamp = new Date().toISOString().replace('T', ' ').slice(0, 19);
   console.log(`\n\nWebhook received ${timestamp}\n`);
   console.log(JSON.stringify(req.body, null, 2));
+
+  try {
+    const messageData = req.body.entry[0].changes[0].value.messages[0];
+    const senderId = messageData.from;
+    const userMessage = messageData.text.body;
+
+    console.log('Message from:', senderId, 'Text:', userMessage);
+
+    // TODO: Trigger agent based on message
+  } catch (err) {
+    console.error('No valid message in webhook:', err.message);
+  }
+  
   res.status(200).end();
 });
 
